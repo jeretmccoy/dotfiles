@@ -1,0 +1,19 @@
+# Secrets and authentication
+**/*secret*
+**/*.env
+**/auth.json
+**/credentials*
+
+# Pi runtime data
+pi/sessions/
+pi/provider-usage-ledger.json
+pi/models-store.json
+pi/workspaces.json
+
+# Neovim/runtime artifacts
+.DS_Store
+*.swp
+*.swo
+
+# Private, machine-specific configuration
+nvim/lua/plugins/dbee-local.lua

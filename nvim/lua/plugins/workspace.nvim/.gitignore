@@ -1,0 +1,7 @@
+# Byte-order marks and editor artifacts
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store

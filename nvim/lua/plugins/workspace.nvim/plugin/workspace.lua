@@ -1,0 +1,3 @@
+-- plugin/workspace.lua
+-- Intentionally empty. Users call require("workspace").setup() themselves.
+-- This file just ensures lazy.nvim/pathogen recognise the plugin directory.

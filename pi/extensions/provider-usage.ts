@@ -330,6 +330,7 @@ async function resolveDisplayMode(ctx: ExtensionContext): Promise<DisplayMode | 
 
 export default function providerUsage(pi: ExtensionAPI) {
 	const cache = new Map<ProviderKind, CacheEntry>();
+	const sessionSpentByFingerprint = new Map<string, number>();
 	let sessionStarted = false;
 	let tuiActive = false;
 	let timer: ReturnType<typeof setInterval> | undefined;
@@ -348,12 +349,12 @@ export default function providerUsage(pi: ExtensionAPI) {
 		}
 
 		if (mode.type === "api-key") {
-			const spent = await readKeySpend(mode.fingerprint);
+			const spent = sessionSpentByFingerprint.get(mode.fingerprint) ?? 0;
 			if (tuiActive && selectedModeId === mode.id) {
 				const shortKey = mode.fingerprint.slice(0, 6);
 				ctx.ui.setStatus(
 					STATUS_ID,
-					`${mode.label} API key ${shortKey}: ${formatMoney(spent)} tracked`,
+					`${mode.label} API key ${shortKey}: ${formatMoney(spent)} this chat`,
 				);
 			}
 			return;
@@ -388,6 +389,7 @@ export default function providerUsage(pi: ExtensionAPI) {
 	};
 
 	pi.on("session_start", (_event, ctx) => {
+		sessionSpentByFingerprint.clear();
 		sessionStarted = true;
 		if (ctx.mode !== "tui") return;
 		tuiActive = true;
@@ -416,6 +418,7 @@ export default function providerUsage(pi: ExtensionAPI) {
 
 		const fingerprint = keyFingerprint(auth.apiKey);
 		await updateKeySpend(fingerprint, message.provider, cost, messageEventId(message));
+		sessionSpentByFingerprint.set(fingerprint, (sessionSpentByFingerprint.get(fingerprint) ?? 0) + cost);
 		if (tuiActive && ctx.model?.provider === message.provider) await refresh(ctx, true);
 	});
 

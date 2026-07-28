@@ -44,6 +44,7 @@ fi
 
 backup_and_link "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 backup_and_link "$DOTFILES_DIR/pi/settings.json" "$HOME/.pi/agent/settings.json"
+backup_and_link "$DOTFILES_DIR/pi/APPEND_SYSTEM.md" "$HOME/.pi/agent/APPEND_SYSTEM.md"
 
 mkdir -p "$HOME/.pi/agent/extensions"
 for extension in "$DOTFILES_DIR"/pi/extensions/*.ts; do

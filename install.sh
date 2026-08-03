@@ -43,6 +43,23 @@ if ! command -v pi >/dev/null; then
 fi
 
 backup_and_link "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+backup_and_link "$DOTFILES_DIR/astronvim" "$HOME/.config/astronvim"
+backup_and_link "$DOTFILES_DIR/shell/aliases.sh" "$HOME/.config/dotfiles/aliases.sh"
+
+shell_rc=""
+case "${SHELL##*/}" in
+  zsh) shell_rc="$HOME/.zshrc" ;;
+  bash) shell_rc="$HOME/.bashrc" ;;
+esac
+if [ -n "$shell_rc" ]; then
+  source_line='[ -r "$HOME/.config/dotfiles/aliases.sh" ] && . "$HOME/.config/dotfiles/aliases.sh"'
+  touch "$shell_rc"
+  if ! grep -Fqx "$source_line" "$shell_rc"; then
+    printf '\n%s\n' "$source_line" >> "$shell_rc"
+    printf 'Updated: %s\n' "$shell_rc"
+  fi
+fi
+
 backup_and_link "$DOTFILES_DIR/pi/settings.json" "$HOME/.pi/agent/settings.json"
 backup_and_link "$DOTFILES_DIR/pi/APPEND_SYSTEM.md" "$HOME/.pi/agent/APPEND_SYSTEM.md"
 
@@ -63,4 +80,5 @@ Private and generated data remain local and are not linked, including:
 
 Run `pi`, then `/login`, to authenticate on a new device.
 Open `nvim`; lazy.nvim will install plugins automatically.
+Open AstroNvim with `astro`; its plugins will install automatically.
 MSG

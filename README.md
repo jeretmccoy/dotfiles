@@ -1,6 +1,6 @@
 # Dotfiles
 
-Portable, public configuration for [Neovim](https://neovim.io/) and [pi](https://pi.dev/).
+Portable, public configuration for [Neovim](https://neovim.io/), [AstroNvim](https://astronvim.com/), and [pi](https://pi.dev/).
 Credentials, sessions, workspace paths, database connections, and other machine-specific data are intentionally excluded.
 
 ## Install
@@ -22,7 +22,12 @@ pi
 
 nvim
 # lazy.nvim installs plugins on first launch
+
+astro
+# Opens the separate AstroNvim configuration and installs its plugins on first launch
 ```
+
+The `astro` alias runs `NVIM_APPNAME=astronvim nvim`, keeping AstroNvim's configuration and runtime data separate from the default `nvim` setup.
 
 ## Private database configuration
 
